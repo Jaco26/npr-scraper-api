@@ -20,20 +20,5 @@ const nprHeadlines = () => {
     .catch(err => console.log(err))
 } 
 
-const samsGithub = () => {
-  return axios.get('https://github.com/samstanding?tab=repositories')
-    .then(response => {
-      const html = response.data;
-      const $ = cheerio.load(html);
-      let repoList = [];
-      $('#user-repositories-list').find('ul').first().each(function(i, elem) {
-        repoList[i] = {
-          
-        }
-      })
-    })
-}
-
-
 module.exports = nprHeadlines;
 

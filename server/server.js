@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const pool = require('./modules/pool');
 const cron = require('node-cron');
 const app = express();
+// Scraper
+const scraper = require('./models/Scraper');
+
 // Include NPR Scraper 
 const nprHeadlines = require('./modules/nprArticles');
 
@@ -43,3 +46,5 @@ app.get('/headline/list', (req, res) => {
       res.sendStatus(500);
     });
 });
+
+
