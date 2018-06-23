@@ -1,6 +1,6 @@
 const axios = require('axios');
-const GeneralContent = require('../models/GeneralContent');
-const FeaturedStories = require('../models/FeaturedStories');
+const GeneralContent = require('../scraper/GeneralContent');
+const FeaturedStories = require('../scraper/FeaturedStories');
 
 const results = async () => {
   return await axios.get('https://www.npr.org')

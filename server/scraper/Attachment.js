@@ -12,13 +12,15 @@ class Attachment extends Scraper {
   }
  
   setTitleText() {
-    return this.$(this.elem).find('.title').text();
+    let text = this.$(this.elem).find('.title').text();
+    return text.replace(/\\/g, '');
   }
   setTitleUrl() {
     return this.$(this.elem).find('a').first().attr('href');
   }
   setStoryNumber () {
-    return this.$(this.elem).find('.story-wrap').attr('data-metrics').valueOf();
+    let metricsObject = this.$(this.elem).find('.story-wrap').attr('data-metrics').valueOf();
+    return Number(metricsObject.match(/\d/g).join());
   }
 }
 
