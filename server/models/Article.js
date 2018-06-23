@@ -1,29 +1,37 @@
-class Article {
-  constructor (slugText, slugUrl, titleText, titleUrl, teaserText, teaserUrl, volume) {
-    this.slugText = slugText;
-    this.slugUrl = slugUrl;
-    this.titleText = titleText;
-    this.titleUrl = titleUrl;
-    this.teaserText = teaserText;
-    this.teaserUrl = teaserUrl;
-    this.volume = volume;
+const Scraper = require('./Scraper');
+
+class Article extends Scraper {
+  constructor (elem) {
+    super(elem);
+    this.elem = elem;
+    this.slugText = this.setSlugText();
+    this.slugUrl = this.setSlugUrl();
+    this.titleText = this.setTitleText();
+    this.titleUrl = this.setTitleUrl();
+    this.teaserText = this.setTeaserText();
+    this.volume = this.setVolume();
   }
+
+  setSlugText () {
+    return this.$(this.elem).find('.slug').children('a').text();
+  }
+  setSlugUrl () {
+    return this.$(this.elem).find('.slug').children('a').attr('href');
+  }
+  setTitleText () {
+    return this.$(this.elem).find('.title').text();
+  }
+  setTitleUrl () {
+    return this.$(this.elem).find('a').first().attr('href');
+  }
+  setTeaserText () {
+    return this.$(this.elem).find('.teaser').text();
+  }
+  setVolume () {
+    return this.$(this.elem).attr('class')
+  }
+
 }
 
-class Basic extends Article {
-  constructor (slugText, slugUrl, titleText, titleUrl, volume) {
-    super (slugText, slugUrl, titleText, titleUrl);
-  }
-}
 
-class Attachment extends Article {
-  constructor (titleText, titleUrl) {
-    super (titleText, titleUrl)
-  }
-}
-
-module.exports = {
-  Article,
-  Basic,
-  Attachment,
-}
+module.exports = Article
