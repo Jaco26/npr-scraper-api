@@ -15,17 +15,3 @@ app.listen(process.env.PORT || 5000, () => {
   console.log('Server ready on port:', process.env.PORT || 5000);  
 });
 
-const fs = require('fs');
-
-app.get('/get-npr', async (req, res) => {
-  const results = await nprScraper();  
-  fs.writeFile('dataToClean.json', JSON.stringify(results, null, 4), (err) => {
-    if (err) throw err;
-    console.log('Check the roooooot');
-    
-  });
-  // res.send(results);
-})
-
-
-

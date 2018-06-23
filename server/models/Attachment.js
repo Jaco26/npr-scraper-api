@@ -1,9 +1,9 @@
 const Scraper = require('./Scraper');
 
 class Attachment extends Scraper {
-  constructor (elem) {
-    super(elem);
-    this.elem = elem;
+  constructor(html) {
+    super(html);
+    this.elem = html;
     this.data = {
       titleText: this.setTitleText(),
       titleUrl: this.setTitleUrl(),
