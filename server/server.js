@@ -3,10 +3,11 @@ const bodyParser = require('body-parser');
 const pool = require('./modules/pool');
 const cron = require('node-cron');
 const app = express();
+// Include NPR Scraper 
 const nprScraper = require('./modules/npr');
 
-console.log(nprScraper())
-// Include NPR Scraper 
+
+
 
 
 
@@ -20,7 +21,10 @@ app.listen(process.env.PORT || 5000, () => {
 });
 
 
-
+app.get('/get-npr', async (req, res) => {
+  const results = await nprScraper();  
+  res.send(results);
+})
 
 
 

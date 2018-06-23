@@ -4,12 +4,15 @@ class Article extends Scraper {
   constructor (elem) {
     super(elem);
     this.elem = elem;
-    this.slugText = this.setSlugText();
-    this.slugUrl = this.setSlugUrl();
-    this.titleText = this.setTitleText();
-    this.titleUrl = this.setTitleUrl();
-    this.teaserText = this.setTeaserText();
-    this.volume = this.setVolume();
+    this.data = {
+      slugText: this.setSlugText(),
+      slugUrl: this.setSlugUrl(),
+      titleText: this.setTitleText(),
+      titleUrl: this.setTitleUrl(),
+      teaserText: this.setTeaserText(),
+      storyNumber: this.setStoryNumber(),
+      classes: this.setClasses(),
+    }
   }
 
   setSlugText () {
@@ -27,8 +30,11 @@ class Article extends Scraper {
   setTeaserText () {
     return this.$(this.elem).find('.teaser').text();
   }
-  setVolume () {
-    return this.$(this.elem).attr('class')
+  setStoryNumber () {
+    return this.$(this.elem).find('.story-text').children('a').attr('data-metrics').valueOf();
+  }
+  setClasses () {
+    return this.$(this.elem).attr('class');
   }
 
 }

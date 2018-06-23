@@ -1,32 +1,22 @@
-const Scraper = require('./Scraper');
+const GeneralContent = require('./GeneralContent');
 const Article = require('./Article')
 
-class FeaturedStories extends Scraper {
-  constructor (html) {
-    super(html);
-    this.wrapper = '.stories-wrap-featured'
-    this.articles = this.setArticles();
-    this.sections = this.setSections()
+class FeaturedStories extends GeneralContent {
+  constructor (html, wrapper) {
+    super(html, wrapper);
+    this.featuredGroup = this.setFeaturedGroup();
   }
 
-  setArticles(){
-    let articles = []
-    this.$(this.wrapper).find('article').each( (i, elem) => {
-      articles.push(new Article(elem))
+  setFeaturedGroup () {
+    let articles = [];
+    this.$(this.wrapper).children('.featured-group').each( (i, ftrGrp) => {
+      let featured = [];
+      this.$(ftrGrp).children('article').each( (i, article) => {
+        featured.push(new Article(article).data);
+      });
+      articles.push(featured);
     });
     return articles;
-  }
-
-  setSections () {
-    let sections = [];
-    this.$(this.wrapper).find('section').each( (i, section) => {
-      let articles = [];
-      this.$(section).find('article').each( (i, article) => {
-        articles.push(new Article(article));
-      });
-      sections.push({articles: articles})
-    });
-    return sections;
   }
 
 }
