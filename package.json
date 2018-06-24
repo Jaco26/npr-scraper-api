@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "./node_modules/nodemon/bin/nodemon.js server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,5 +18,8 @@
     "node-cron": "^1.2.1",
     "pg": "^7.4.3",
     "vue": "^2.5.16"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
   }
 }

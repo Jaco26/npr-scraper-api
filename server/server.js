@@ -8,7 +8,7 @@ const nprScraper = require('./modules/npr-scraper');
 const fileWriter = require('./modules/fileWriter');
 
 const resultReducer = require('./modules/result-reducer');
-const insertResults = require('./modules/insert-results');
+const insertArticles = require('./modules/insert-results');
 const practiceData = require('./modules/practiceJSON/7:30.json');
 
 app.use(bodyParser.json());
@@ -25,7 +25,7 @@ app.listen(process.env.PORT || 5000, () => {
 app.get('/insert', (req, res) => {
   let results = resultReducer(practiceData);
   // res.send(results)
-  insertResults(results);
+  insertArticles(results);
 
 })
 
@@ -34,7 +34,7 @@ app.get('/test/scraper', async (req, res) => {
   const results = await nprScraper();
   const reducedResults = resultReducer(results)
   // fileWriter('1120.json', results);
-  insertResults(reducedResults);
+  insertArticles(reducedResults);
   
-  // res.send(results)
+  res.send(reducedResults)
 })

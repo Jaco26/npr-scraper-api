@@ -53,24 +53,43 @@ const handleOtherInserts = (article) => {
   }
 }
 
-const insertResults = (resultList) => {  
+const insertToArticleInstances = (article) => {
+  const { elementType, sectionType, titleUrl } = article;
+  const sqlText = `INSERT INTO article_instances (element_type, section_type, article_id)
+  VALUES($1, $2, (SELECT id FROM articles WHERE title_url = $3));`;
+  pool.query(sqlText, [elementType, sectionType, titleUrl])
+    .then( () => {
+      try {
+        handleOtherInserts(article);
+      } catch (err) {
+        console.log(err);
+      }
+    });
+} 
+
+const insertArticles = (resultList) => {  
   resultList.forEach(article => {
-    const { titleUrl, elementType, sectionType } = article;
-    const sqlText = `INSERT INTO articles (title_url, element_type, section_type)
-    VALUES($1, $2, $3);`;
-    pool.query(sqlText, [titleUrl, elementType, sectionType])
-      .then(() => {
-        try {
-          handleOtherInserts(article);
-        } catch (err) {
-          console.log(err);
+    const { titleUrl } = article;
+    const sqlText1 = `SELECT id FROM articles WHERE title_url = $1;`;
+    pool.query(sqlText1, [titleUrl])
+      .then(result => {
+        if(!result.rows[0]){
+          const sqlText2 = `INSERT INTO articles (title_url)
+            VALUES($1);`;
+          pool.query(sqlText2, [titleUrl])
+            .then(() => {
+              insertToArticleInstances(article);
+            })
+            .catch(err => {
+              console.log((err));
+            });
+        } else {
+          console.log('Article already exists in database');
+          insertToArticleInstances(article);
         }
-      })
-      .catch(err => {
-        console.log((err));        
       });
   });
 
 }
 
-module.exports = insertResults;
+module.exports = insertArticles;
