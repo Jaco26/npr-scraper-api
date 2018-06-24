@@ -20,8 +20,8 @@ app.listen(process.env.PORT || 5000, () => {
   console.log('Server ready on port:', process.env.PORT || 5000);  
 });
 
-app.get('/test/scraper', async (req, res) => {
-  const results = await nprScraper();
-  fileWriter('6:40.json', results);
-  res.send(results)
-})
+// app.get('/test/scraper', async (req, res) => {
+//   const results = await nprScraper();
+//   fileWriter('7:50.json', results);
+//   res.send(results)
+// })

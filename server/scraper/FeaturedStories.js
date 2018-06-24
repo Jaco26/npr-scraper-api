@@ -14,7 +14,7 @@ class FeaturedStories extends GeneralContent {
       this.$(ftrGrp).children('article').each( (i, article) => {
         featured.push(new Article(article).data);
       });
-      articles.push(featured);
+      articles.push({featured});
     });
     return articles;
   }
