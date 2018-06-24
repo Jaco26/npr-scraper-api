@@ -33,8 +33,8 @@ app.get('/insert', (req, res) => {
 app.get('/test/scraper', async (req, res) => {
   const results = await nprScraper();
   const reducedResults = resultReducer(results)
-  // fileWriter('1120.json', results);
+  fileWriter('ArticleBugFix526.json', reducedResults);
   insertArticles(reducedResults);
   
-  res.send(reducedResults)
+  // res.send(reducedResults)
 })

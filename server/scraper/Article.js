@@ -27,7 +27,7 @@ class Article extends Scraper {
     return text.replace(/\\/g, '');
   }
   setTitleUrl () {
-    return this.$(this.elem).find('a').first().attr('href');
+    return this.$(this.elem).find('a').last().attr('href');
   }
   setTeaserText () {
     let text = this.$(this.elem).find('.teaser').text();
