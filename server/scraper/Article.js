@@ -27,14 +27,17 @@ class Article extends Scraper {
     return text.replace(/\\/g, '');
   }
   setTitleUrl () {
-    return this.$(this.elem).find('a').last().attr('href');
+    let re = /(click\s?story\s?\d)/i;
+    return this.$('a').filter( (i, anchor) => {
+      return re.test(this.$(anchor).attr('data-metrics'));
+    }).first().attr('href');
   }
   setTeaserText () {
     let text = this.$(this.elem).find('.teaser').text();
     return text.replace(/\\/g, '');
   }
   setStoryNumber () {
-    let metricsObject = this.$(this.elem).find('.story-text').children('a').attr('data-metrics').valueOf();
+    let metricsObject = this.$(this.elem).find('.story-text').children('a').attr('data-metrics');
     return Number(metricsObject.match(/\d/g).join(''));
   }
   setClasses () {

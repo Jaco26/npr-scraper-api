@@ -16,10 +16,13 @@ class Attachment extends Scraper {
     return text.replace(/\\/g, '');
   }
   setTitleUrl() {
-    return this.$(this.elem).find('a').first().attr('href');
+    let re = /(click\s?attached\s?story\s?\d)/i;
+    return this.$('a').filter((i, anchor) => {
+      return re.test(this.$(anchor).attr('data-metrics'));
+    }).first().attr('href');
   }
   setStoryNumber () {
-    let metricsObject = this.$(this.elem).find('.story-wrap').attr('data-metrics').valueOf();
+    let metricsObject = this.$(this.elem).find('.story-wrap').attr('data-metrics');
     return Number(metricsObject.match(/\d/g).join());
   }
 }
