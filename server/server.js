@@ -24,14 +24,17 @@ app.listen(process.env.PORT || 5000, () => {
 
 app.get('/insert', (req, res) => {
   let results = resultReducer(practiceData);
-  res.send(results)
-  // insertResults(results);
+  // res.send(results)
+  insertResults(results);
 
 })
 
 
-// app.get('/test/scraper', async (req, res) => {
-//   const results = await nprScraper();
-//   fileWriter('7:50.json', results);
-//   res.send(results)
-// })
+app.get('/test/scraper', async (req, res) => {
+  const results = await nprScraper();
+  const reducedResults = resultReducer(results)
+  // fileWriter('1120.json', results);
+  insertResults(reducedResults);
+  
+  // res.send(results)
+})

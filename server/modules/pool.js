@@ -20,7 +20,7 @@ if (process.env.DATABASE_URL) {
   config = {
     host: 'localhost',
     port: 5432,
-    database: 'npr_scrapings',
+    database: 'npr_scraper_api',
     max: 10,
     idleTimeoutMillis: 30000,
   };
