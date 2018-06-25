@@ -14,9 +14,9 @@ cron.schedule('00 4,8,12,16,20 * * *', () => {
   makeItGo();
 });
 
-// cron.schedule('20 10 * * *', () => {
-//   console.log('The cron is working');
-//   makeItGo();
-// });
+cron.schedule('50 5 18 * * *', () => {
+  console.log('The cron is working');
+  makeItGo();
+});
 
 module.exports = cron;
