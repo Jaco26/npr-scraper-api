@@ -39,7 +39,10 @@ CREATE TABLE article_instances
   article_id INT references articles,
   element_type INT references element_types,
   section_type INT references section_types,
-  ts TIMESTAMP without time zone default (now() at time zone 'utc')
+  ts TIMESTAMP
+  without time zone default
+  (now
+  () at time zone 'utc')
 );
 
   CREATE TABLE articles
@@ -72,3 +75,4 @@ CREATE TABLE article_instances
   VALUES
     ('featured'),
     ('general');
+

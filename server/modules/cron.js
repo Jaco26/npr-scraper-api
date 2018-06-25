@@ -10,8 +10,13 @@ const makeItGo = async () => {
 }
 
 // makeItGo() at 4am, 8am, 12pm, 4pm, and 8pm
-cron.schedule('00 00 4,8,12,16,20 * * *', () => {
+cron.schedule('00 4,8,12,16,20 * * *', () => {
   makeItGo();
 });
+
+// cron.schedule('20 10 * * *', () => {
+//   console.log('The cron is working');
+//   makeItGo();
+// });
 
 module.exports = cron;
