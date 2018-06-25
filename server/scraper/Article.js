@@ -15,32 +15,33 @@ class Article extends Scraper {
     }
   }
 
-  setSlugText () {
+
+  setSlugText() {
     let text = this.$(this.elem).find('.slug').children('a').text();
     return text.replace(/\\n/g, '').trim();
   }
-  setSlugUrl () {
+  setSlugUrl() {
     return this.$(this.elem).find('.slug').children('a').attr('href');
   }
-  setTitleText () {
+  setTitleText() {
     let text = this.$(this.elem).find('.title').text();
     return text.replace(/\\/g, '');
   }
-  setTitleUrl () {
+  setTitleUrl() {
     let re = /(click\s?story\s?\d)/i;
-    return this.$('a').filter( (i, anchor) => {
+    return this.$(this.elem).find('a').filter((i, anchor) => {
       return re.test(this.$(anchor).attr('data-metrics'));
     }).first().attr('href');
   }
-  setTeaserText () {
+  setTeaserText() {
     let text = this.$(this.elem).find('.teaser').text();
     return text.replace(/\\/g, '');
   }
-  setStoryNumber () {
-    let metricsObject = this.$(this.elem).find('.story-text').children('a').attr('data-metrics');
-    return Number(metricsObject.match(/\d/g).join(''));
+  setStoryNumber() {
+    let metricsObject = this.$(this.elem).find('.story-text').children('a').data('metrics');
+    return Number(metricsObject.action.match(/\d/g).join(''));
   }
-  setClasses () {
+  setClasses() {
     return this.$(this.elem).attr('class');
   }
 
