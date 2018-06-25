@@ -8,7 +8,7 @@ CREATE TABLE standard_article_data
   teaser_text VARCHAR,
   classes VARCHAR,
   story_number INT,
-  instance_id INT references articles
+  instance_id INT references article_instances
 );
 
 CREATE TABLE basic_article_data
@@ -20,7 +20,7 @@ CREATE TABLE basic_article_data
   title_url VARCHAR,
   classes VARCHAR,
   story_number INT,
-  instance_id INT references articles
+  instance_id INT references article_instances
 );
 
 CREATE TABLE attachment_data
@@ -29,18 +29,24 @@ CREATE TABLE attachment_data
   title_text VARCHAR,
   title_url VARCHAR,
   story_number INT,
-  instance_id INT references articles
+  instance_id INT references article_instances
 );
 
 
-CREATE TABLE articles
+CREATE TABLE article_instances
 (
   id SERIAL PRIMARY KEY,
-  title_url VARCHAR,
+  article_id INT references articles,
   element_type INT references element_types,
   section_type INT references section_types,
   ts TIMESTAMP without time zone default (now() at time zone 'utc')
 );
+
+  CREATE TABLE articles
+  (
+    id SERIAL PRIMARY KEY,
+    title_url VARCHAR
+  );
 
 
   CREATE TABLE element_types
@@ -66,11 +72,3 @@ CREATE TABLE articles
   VALUES
     ('featured'),
     ('general');
-
-
-
-
-
-
-
-

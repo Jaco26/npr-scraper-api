@@ -15,7 +15,6 @@ class Article extends Scraper {
     }
   }
 
-
   setSlugText() {
     let text = this.$(this.elem).find('.slug').children('a').text();
     return text.replace(/\\n/g, '').trim();

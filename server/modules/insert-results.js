@@ -1,12 +1,5 @@
 const pool = require('./pool');
 
-/**
- * I need a different way of selecting id from articles for the insance id.
- * 'SELECT DISTINCT' won't work because there are more than one instance ids 
- * for any given title_url. I need a different database design...
- * 
-*/
-
 const insertBasic = (article) => {
   const { slugText, slugUrl, titleText, titleUrl, classes, storyNumber} = article;
   const sqlText = `INSERT INTO basic_article_data 
