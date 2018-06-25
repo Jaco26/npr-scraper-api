@@ -4,10 +4,9 @@ const app = express();
 // Include NPR Scraper 
 const nprScraper = require('./modules/npr-scraper');
 const fileWriter = require('./modules/fileWriter');
-
 const resultReducer = require('./modules/result-reducer');
 const insertArticles = require('./modules/insert-results');
-const practiceData = require('./modules/practiceJSON/7:30.json');
+require('./modules/cron');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -20,9 +19,9 @@ app.listen(process.env.PORT || 5000, () => {
 
 
 app.get('/test/scraper', async (req, res) => {
-  const results = await nprScraper();
-  const reducedResults = resultReducer(results)
-  fileWriter('ArticleBugFix630confirm.json', reducedResults);
-  insertArticles(reducedResults);
-  res.send(reducedResults)
+  // const results = await nprScraper();
+  // const reducedResults = resultReducer(results)
+  // fileWriter('ArticleBugFix630confirm.json', reducedResults);
+  // insertArticles(reducedResults);
+  // res.send(reducedResults);
 })
