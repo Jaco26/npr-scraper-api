@@ -7,16 +7,14 @@ const generateSinglePhraseQuery = (searchPhrase, includeTeaserText) => {
       ai.element_type, 
       ai.section_type, 
       ai.story_number, 
-      ai.ts, 
       av.title_text, 
       av.title_url,
       av.slug_text, 
-      av.date_trunc, 
       av.teaser_text
     FROM article_instances as ai 
-    JOIN article_data_view as av ON ai.id = av.instance_id
+    JOIN article_view as av ON ai.id = av.instance_id
     WHERE ai.article_id = ANY (
-      SELECT article_id FROM article_data_view WHERE title_text ILIKE $1 
+      SELECT article_id FROM article_view WHERE title_text ILIKE $1 
       ${includeTeaserText ? ` OR teaser_text ILIKE $2` : ''}
     );`;
     console.log(sqlText);
@@ -46,16 +44,14 @@ const generateMultiPhraseQuery = (searchPhrase, includeTeaserText) => {
       ai.element_type, 
       ai.section_type, 
       ai.story_number, 
-      ai.ts, 
       av.title_text, 
       av.title_url,
       av.slug_text, 
-      av.date_trunc, 
       av.teaser_text
     FROM article_instances as ai 
-    JOIN article_data_view as av ON ai.id = av.instance_id
+    JOIN article_view as av ON ai.id = av.instance_id
     WHERE ai.article_id = ANY (
-      SELECT article_id FROM article_data_view WHERE title_text ${ILIKE}
+      SELECT article_id FROM article_view WHERE title_text ${ILIKE}
       ${includeTeaserText ? OR_ILIKE : ``}
     );`;
     console.log(sqlText);

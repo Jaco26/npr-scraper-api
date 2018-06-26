@@ -9,28 +9,55 @@ const makeItGo = async () => {
   insertArticles(reducedResults);
 }
 
-// cron.schedule('50 5 18 * * *', () => {
-//   console.log('The cron is working');
-//   makeItGo();
-// });
-
-// makeItGo at 6:30
-cron.schedule('30 18 * * *', () => {
+// makeItGo at 4:00 AM
+cron.schedule('00 4 * * *', () => {
   makeItGo();
 });
 
-// makeItGo at 7:00
-cron.schedule('00 19 * * *', () => {
+// makeItGo at 6:00 AM
+cron.schedule('00 6 * * *', () => {
   makeItGo();
 });
 
-// makeItGo at 7:30
-cron.schedule('30 19 * * *', () => {
+// makeItGo at 8:00 AM
+cron.schedule('00 8 * * *', () => {
   makeItGo();
 });
 
-cron.schedule('21 20 * * *', () => {
+// makeItGo at 10:00 AM
+cron.schedule('00 10 * * *', () => {
   makeItGo();
 });
+
+// makeItGo at 12:00 PM
+cron.schedule('00 12 * * *', () => {
+  makeItGo();
+});
+
+// makeItGo at 2:00 PM
+cron.schedule('00 14 * * *', () => {
+  makeItGo();
+});
+
+// makeItGo at 4:00 PM
+cron.schedule('00 16 * * *', () => {
+  makeItGo();
+});
+
+// makeItGo at 6:00 PM
+cron.schedule('00 18 * * *', () => {
+  makeItGo();
+});
+
+// makeItGo at 8:00 PM
+cron.schedule('00 20 * * *', () => {
+  makeItGo();
+});
+
+// makeItGo at 10:30 PM
+cron.schedule('30 22 * * *', () => {
+  makeItGo();
+});
+
 
 module.exports = cron;
