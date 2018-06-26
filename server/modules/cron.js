@@ -9,13 +9,27 @@ const makeItGo = async () => {
   insertArticles(reducedResults);
 }
 
-// makeItGo() at 4am, 8am, 12pm, 4pm, and 8pm
-cron.schedule('00 4,8,12,16,20 * * *', () => {
+// cron.schedule('50 5 18 * * *', () => {
+//   console.log('The cron is working');
+//   makeItGo();
+// });
+
+// makeItGo at 6:30
+cron.schedule('30 18 * * *', () => {
   makeItGo();
 });
 
-cron.schedule('50 5 18 * * *', () => {
-  console.log('The cron is working');
+// makeItGo at 7:00
+cron.schedule('00 19 * * *', () => {
+  makeItGo();
+});
+
+// makeItGo at 7:30
+cron.schedule('30 19 * * *', () => {
+  makeItGo();
+});
+
+cron.schedule('21 20 * * *', () => {
   makeItGo();
 });
 

@@ -79,11 +79,11 @@ CREATE TABLE article_instances
     ('general');
 
   
-  CREATE VIEW article_data_view AS SELECT s.teaser_text, s.title_text, s.slug_text, s.instance_id, ai.article_id, ai.story_number, ai.element_type, ai.section_type, date_trunc('minute', ai.ts)
-      FROM standard as s JOIN article_instances AS ai ON s.instance_id = ai.id
-    UNION
-      SELECT null, b.title_text, b.slug_text, b.instance_id, ai.article_id, ai.story_number, ai.element_type, ai.section_type, date_trunc('minute', ai.ts)
-      FROM basic as b JOIN article_instances AS ai ON b.instance_id = ai.id
-    UNION
-      SELECT null, a.title_text, null, a.instance_id, ai.article_id, ai.story_number, ai.element_type, ai.section_type, date_trunc('minute', ai.ts)
-      FROM attachment as a JOIN article_instances AS ai ON a.instance_id = ai.id;
+CREATE VIEW article_data_view AS SELECT s.teaser_text, s.title_text, s.title_url, s.slug_text, s.instance_id, ai.article_id, ai.story_number, ai.element_type, ai.section_type, date_trunc('minute', ai.ts)
+    FROM standard as s JOIN article_instances AS ai ON s.instance_id = ai.id
+  UNION
+    SELECT null, b.title_text, b.title_url, b.slug_text, b.instance_id, ai.article_id, ai.story_number, ai.element_type, ai.section_type, date_trunc('minute', ai.ts)
+    FROM basic as b JOIN article_instances AS ai ON b.instance_id = ai.id
+  UNION
+    SELECT null, a.title_text, a.title_url, null, a.instance_id, ai.article_id, ai.story_number, ai.element_type, ai.section_type, date_trunc('minute', ai.ts)
+    FROM attachment as a JOIN article_instances AS ai ON a.instance_id = ai.id;
