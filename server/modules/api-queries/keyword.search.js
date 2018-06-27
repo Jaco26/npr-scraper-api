@@ -18,7 +18,6 @@ const generateSinglePhraseQuery = (searchPhrase, includeTeaserText) => {
       ${includeTeaserText ? ` OR teaser_text ILIKE $2` : ''}
     );`;
     console.log(sqlText);
-    
   let values = [`%${phrase}%`];
   return {
     sqlText,
@@ -55,7 +54,6 @@ const generateMultiPhraseQuery = (searchPhrase, includeTeaserText) => {
       ${includeTeaserText ? OR_ILIKE : ``}
     );`;
     console.log(sqlText);
-    
   let values = [...searchPhrase.split(' ').map(word => '%' + word + '%')];
   return { sqlText, values };
 }
@@ -76,6 +74,4 @@ const searchText = (searchString, includeTeaserText) => {
   }
 }
 
-module.exports = {
-  searchText
-}
+module.exports = searchText;
