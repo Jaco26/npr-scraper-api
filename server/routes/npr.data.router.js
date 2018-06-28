@@ -16,9 +16,7 @@ router.get('/search', async (req, res) => {
 });
 
 router.get('/article/:articleId', async (req, res) => {
-  const {articleId} = req.params;
-  console.log(articleId);
-  
+  const {articleId} = req.params;  
   try {
     const result = await queries.getArticleById(articleId);
     let response = result[0] ? result : messages.notFound(articleId);
