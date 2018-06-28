@@ -1,6 +1,6 @@
 # National Public Headlines
 
-With this project, I aim to create a database, updated multiple times/day, to store page-position as well as headline text and data for each article headline on www.npr.org and make it accessible through REST API endpoints. 
+With this project, I aim to create a database, updated multiple times/day, to store page-position as well as headline text and data for each article headline data from www.npr.org and make it accessible through REST API endpoints. 
 
 ### Prerequisits for running locally:
 * Node.js
