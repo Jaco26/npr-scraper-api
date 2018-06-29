@@ -1,8 +1,10 @@
+// require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 require('./modules/cron');
-require('dotenv').config();
+
+
 
 // Route includes
 const nprDataRouter = require('./routes/npr.data.router');

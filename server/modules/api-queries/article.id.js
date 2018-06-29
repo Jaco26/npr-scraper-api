@@ -14,7 +14,7 @@ const getArticleById = (articleId) => {
   FROM article_instances AS ai 
 	JOIN article_view AS av ON av.article_id = ai.article_id
   WHERE av.article_id = $1
-  ORDER BY date_trunc ASC;`;
+  ORDER BY date_trunc ASC;`;  
   return pool.query(sqlText, [articleId])
     .then(response => response.rows)
     .catch(err => err);
