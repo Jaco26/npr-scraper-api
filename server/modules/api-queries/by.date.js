@@ -2,7 +2,7 @@ const pool = require('../pool');
 
 const getArticlesByDate = (date) => {
   const sqlText = `SELECT DISTINCT
-  date_trunc('minute', ai.ts),
+    date_trunc('minute', ai.ts),
     ai.id as article_instance_id,
     ai.article_id,
     ai.element_type,

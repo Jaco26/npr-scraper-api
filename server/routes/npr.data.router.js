@@ -2,7 +2,7 @@ const router = require('express').Router();
 const queries = require('../modules/api-queries');
 const messages = require('../modules/messages');
 
-router.get('/search', async (req, res) => {
+router.get('/list/search', async (req, res) => {
   let { phrase, teaser } = req.query;
   try {
     let includeTeaser = teaser == 'true' ? true: false;
@@ -15,11 +15,11 @@ router.get('/search', async (req, res) => {
   }
 });
 
-router.get('/article/:articleId', async (req, res) => {
-  const {articleId} = req.params;  
+router.get('/article', async (req, res) => {
+  const {id} = req.query;  
   try {
-    const result = await queries.getArticleById(articleId);
-    let response = result[0] ? result : messages.notFound(articleId);
+    const result = await queries.getArticleById(id);
+    let response = result[0] ? result : messages.notFound(id);
     res.send(response);
   } catch (err) {
     console.log(err);
@@ -29,7 +29,7 @@ router.get('/article/:articleId', async (req, res) => {
 
 
 router.get('/list/:date', async (req, res) => {
-  let date = new Date(req.params.date).toISOString().slice(0, 10);
+  let date = new Date(req.params.date).toISOString().slice(0, 10);  
   try {
     const result = await queries.getArticlesByDate(date);
     let response = result[0] ? result : messages.notFound(date);
