@@ -18,11 +18,13 @@ if (process.env.DATABASE_URL) {
   };
 } else {
   config = {
-    host: 'localhost',
-    port: 5432,
-    database: 'npr_scraper_api',
-    max: 10,
-    idleTimeoutMillis: 30000,
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+    // host: 'localhost',
+    // port: 5432,
+    // database: 'npr_scraper_api',
+    // max: 10,
+    // idleTimeoutMillis: 30000,
   };
 }
 

@@ -20,6 +20,7 @@
     "vue": "^2.5.16"
   },
   "devDependencies": {
+    "dotenv": "^6.0.0",
     "nodemon": "^1.17.5"
   }
 }
