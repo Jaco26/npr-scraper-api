@@ -40,7 +40,7 @@ cron.schedule('00 14 * * *', () => {
 });
 
 // makeItGo at 4:00 PM
-cron.schedule('00 16 * * *', () => {
+cron.schedule('30 11 15 * * *', () => {
   makeItGo();
 });
 
@@ -59,5 +59,10 @@ cron.schedule('00 22 * * *', () => {
   makeItGo();
 });
 
+cron.schedule('22 21 * * *', () => {
+  console.log('****************** 21 22 * * * !!!!!!!!!!!!!');
+  
+  makeItGo();
+});
 
 module.exports = cron;
