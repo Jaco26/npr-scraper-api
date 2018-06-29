@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 /** Routes */
-app.use('/api/article/data', nprDataRouter);
+app.use('/api', nprDataRouter);
 
 
 app.listen(process.env.PORT || 5000, () => {
