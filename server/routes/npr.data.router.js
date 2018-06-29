@@ -28,4 +28,16 @@ router.get('/article/:articleId', async (req, res) => {
 });
 
 
+router.get('/list/:date', async (req, res) => {
+  let date = new Date(req.params.date).toISOString().slice(0, 10);
+  try {
+    const result = await queries.getArticlesByDate(date);
+    let response = result[0] ? result : messages.notFound(date);
+    res.send(response)
+  } catch(err) {
+    console.log(err);
+    res.sendStatus(500);
+  }
+});
+
 module.exports = router;

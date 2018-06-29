@@ -55,7 +55,7 @@ cron.schedule('00 20 * * *', () => {
 });
 
 // makeItGo at 10:30 PM
-cron.schedule('30 22 * * *', () => {
+cron.schedule('59 22 * * *', () => {
   makeItGo();
 });
 

@@ -12,5 +12,6 @@ With this project, I aim to create a database, updated multiple times/day, to st
 * Create a postgres database named `npr_scraper_api`
 
 ```npm install```
+<br>
 ```npm start```
 
