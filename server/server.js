@@ -4,8 +4,6 @@ const bodyParser = require('body-parser');
 const app = express();
 require('./modules/cron');
 
-
-
 // Route includes
 const nprDataRouter = require('./routes/npr.data.router');
 

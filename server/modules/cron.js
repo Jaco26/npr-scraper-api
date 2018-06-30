@@ -28,4 +28,4 @@ new CronJob('00 18 * * *', makeItGo, null, true, 'America/Chicago');
 new CronJob('00 20 * * *', makeItGo, null, true, 'America/Chicago'); 
 
 
-module.exports = cron;
+module.exports = CronJob;
