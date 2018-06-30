@@ -1,4 +1,4 @@
-const cron = require('node-cron');
+const {CronJob} = require('cron');
 const nprScraper = require('./npr-scraper');
 const resultReducer = require('./result-reducer');
 const insertArticles = require('./insert-results');
@@ -9,60 +9,23 @@ const makeItGo = async () => {
   insertArticles(reducedResults);
 }
 
-// makeItGo at 4:00 AM
-cron.schedule('00 4 * * *', () => {
-  makeItGo();
-});
+new CronJob('00 4 * * *', makeItGo, null, true, 'America/Chicago'); 
 
-// makeItGo at 6:00 AM
-cron.schedule('00 6 * * *', () => {
-  makeItGo();
-});
+new CronJob('00 6 * * *', makeItGo, null, true, 'America/Chicago'); 
 
-// makeItGo at 8:00 AM
-cron.schedule('00 8 * * *', () => {
-  makeItGo();
-});
+new CronJob('00 8 * * *', makeItGo, null, true, 'America/Chicago'); 
 
-// makeItGo at 10:00 AM
-cron.schedule('00 10 * * *', () => {
-  makeItGo();
-});
+new CronJob('00 10 * * *', makeItGo, null, true, 'America/Chicago'); 
 
-// makeItGo at 12:00 PM
-cron.schedule('00 12 * * *', () => {
-  makeItGo();
-});
+new CronJob('00 12 * * *', makeItGo, null, true, 'America/Chicago'); 
 
-// makeItGo at 2:00 PM
-cron.schedule('00 14 * * *', () => {
-  makeItGo();
-});
+new CronJob('00 14 * * *', makeItGo, null, true, 'America/Chicago'); 
 
-// makeItGo at 4:00 PM
-cron.schedule('30 11 15 * * *', () => {
-  makeItGo();
-});
+new CronJob('00 16 * * *', makeItGo, null, true, 'America/Chicago'); 
 
-// makeItGo at 6:00 PM
-cron.schedule('00 18 * * *', () => {
-  makeItGo();
-});
+new CronJob('00 18 * * *', makeItGo, null, true, 'America/Chicago'); 
 
-// makeItGo at 8:00 PM
-cron.schedule('00 20 * * *', () => {
-  makeItGo();
-});
+new CronJob('00 20 * * *', makeItGo, null, true, 'America/Chicago'); 
 
-// makeItGo at 10:00 PM
-cron.schedule('00 22 * * *', () => {
-  makeItGo();
-});
-
-cron.schedule('22 21 * * *', () => {
-  console.log('****************** 21 22 * * * !!!!!!!!!!!!!');
-  
-  makeItGo();
-});
 
 module.exports = cron;
