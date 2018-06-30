@@ -25,8 +25,6 @@ new CronJob('00 16 * * *', makeItGo, null, true, 'America/Chicago');
 
 new CronJob('00 18 * * *', makeItGo, null, true, 'America/Chicago'); 
 
-new CronJob('05 18 * * *', makeItGo, null, true, 'America/Chicago'); 
-
 new CronJob('00 20 * * *', makeItGo, null, true, 'America/Chicago'); 
 
 
