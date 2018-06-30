@@ -21,7 +21,10 @@ class GeneralContent extends Scraper {
     this.$(this.wrapper).children('.attachment-group').each((i, atchGrp) => {
       let article = {};
       let attachments = [];
-      let mainArticle = this.$(atchGrp).children('article').first();      
+      // let mainArticle = this.$(atchGrp).find('.variant-group').children('article').first()
+      //   ? this.$(atchGrp).find('.variant-group').children('article').first()
+      //   : this.$(atchGrp).children('article').first();
+      let mainArticle = this.$(atchGrp).find('article').first();
       article = new Article(mainArticle).data;
       this.$(atchGrp).children('.attachment').each((i, atchmnt) => {
         attachments.push(new Attachment(atchmnt).data);
