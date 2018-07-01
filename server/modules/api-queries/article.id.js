@@ -1,7 +1,7 @@
 const pool = require('../pool');
 
 const getArticleById = (articleId) => {
-  const sqlText = `SELECT DISTINCT
+  const sqlText = `SELECT 
     date_trunc('minute', ai.ts), 
     ai.id as article_instance_id, 
     ai.article_id,
@@ -14,7 +14,7 @@ const getArticleById = (articleId) => {
   FROM article_instances AS ai 
 	JOIN article_view AS av ON av.article_id = ai.article_id
   WHERE av.article_id = $1
-  ORDER BY date_trunc ASC;`;  
+  ORDER BY date_trunc DESC;`;  
   return pool.query(sqlText, [articleId])
     .then(response => response.rows)
     .catch(err => err);
