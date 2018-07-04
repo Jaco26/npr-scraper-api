@@ -1,5 +1,6 @@
 module.exports = {
   keywordSearch: require('./keyword.search'),
   getArticleById: require('./article.id'),
-  getArticlesByDate: require('./by.date'),
+  getArticlesBySpecificDate: require('./by.date').getArticlesBySpecificDate,
+  getArticlesByDateRange: require('./by.date').getArticlesByDateRange,
 }

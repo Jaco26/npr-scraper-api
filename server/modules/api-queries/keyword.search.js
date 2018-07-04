@@ -3,6 +3,7 @@ const pool = require('../pool');
 const generateSinglePhraseQuery = (searchPhrase, includeTeaserText) => {
   let phrase = searchPhrase.replace(/[""]/g, '');
   let sqlText = `SELECT 
+      ai.id AS instance_id,
       ai.article_id, 
       ai.element_type, 
       ai.section_type, 
@@ -39,6 +40,7 @@ const generateMultiPhraseQuery = (searchPhrase, includeTeaserText) => {
       }, '')
     : '';
   let sqlText = `SELECT 
+      ai.id AS instance_id,
       ai.article_id, 
       ai.element_type, 
       ai.section_type, 
