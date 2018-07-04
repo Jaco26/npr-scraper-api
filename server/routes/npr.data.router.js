@@ -19,7 +19,7 @@ router.get('/article', async (req, res) => {
   const {id} = req.query;  
   try {
     const result = await queries.getArticleById(id);
-    let response = result[0] ? result : messages.notFound(id);
+    let response = result.distinctText[0] && result.allInstances[0] ? result : messages.notFound(date);
     res.send(response);
   } catch (err) {
     console.log(err);
@@ -32,8 +32,8 @@ router.get('/list/:date', async (req, res) => {
   let date = new Date(req.params.date).toISOString().slice(0, 10);  
   try {
     const result = await queries.getArticlesByDate(date);
-    let response = result[0] ? result : messages.notFound(date);
-    res.send(response)
+    let response = result[0] ? result : messages.notFound(id);    
+    res.send(response);
   } catch(err) {
     console.log(err);
     res.sendStatus(500);
