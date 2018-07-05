@@ -1,6 +1,7 @@
 const pool = require('../pool');
 
-const getArticlesBySpecificDate = (date) => {
+const getArticlesBySpecificDate = (date) => {  
+  date = new Date()
   const sqlText = `SELECT
     date_trunc('minute', ai.ts),
     ai.id AS article_instance_id,
@@ -13,9 +14,9 @@ const getArticlesBySpecificDate = (date) => {
     av.teaser_text
   FROM article_instances AS ai
 	JOIN article_view AS av ON av.instance_id = ai.id
-  WHERE date_trunc('day', ai.ts) = $1
+  WHERE ai.ts BETWEEN $1 AND DATE $2 + INTERVAL '1 day'  
   ORDER BY date_trunc DESC;`;
-  return pool.query(sqlText, [date])
+  return pool.query(sqlText, [date, date])
     .then(response => response.rows)
     .catch(err => err);
 }
@@ -46,7 +47,12 @@ const getInstancesOfChange = (date1, date2, offset = 0) => {
     av.teaser_text
   FROM article_instances AS ai
   JOIN article_view AS av ON av.instance_id = ai.id
-  WHERE ai.ts BETWEEN $1 AND $2 LIMIT 40 OFFSET $3;`;
+  WHERE ai.ts BETWEEN $1 AND $2
+  ORDER BY date_trunc DESC
+  LIMIT 40 OFFSET $3;`;
+   console.log(sqlText);
+   console.log(date1, date2);
+   
   return pool.query(sqlText, [date1, date2, offset])
     .then(response => response.rows)
     .catch(err => err);
@@ -56,7 +62,7 @@ const getArticlesByDateRange = async (date1, date2, offset = 0) => {
   const count = await countResults(date1, date2);
   return {
     count,
-    nextUrl: count - Number(offset) >= 40 ? `/api/list/range/${date1}/${date2}?offset=${Number(offset) + 40}` : '',
+    nextUrl: count - Number(offset) >= 40 ? `/api/list/range/${date1.slice(0, 10)}/${date2.slice(0, 10)}?offset=${Number(offset) + 40}` : '',
     results: await getInstancesOfChange(date1, date2, offset),
   }
 }
