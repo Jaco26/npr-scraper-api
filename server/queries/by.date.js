@@ -3,7 +3,6 @@ const JacobDate = require('../modules/JacobDate');
 
 
 const getArticlesBySpecificDate = (startOfDay, endOfDay) => {  
-  date = new Date()
   const sqlText = `SELECT
     date_trunc('minute', ai.ts),
     ai.id AS article_instance_id,
