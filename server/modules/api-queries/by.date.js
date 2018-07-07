@@ -2,7 +2,7 @@ const pool = require('../pool');
 const JacobDate = require('../JacobDate');
 
 
-const getArticlesBySpecificDate = (date) => {  
+const getArticlesBySpecificDate = (startOfDay, endOfDay) => {  
   date = new Date()
   const sqlText = `SELECT
     date_trunc('minute', ai.ts),
@@ -16,25 +16,25 @@ const getArticlesBySpecificDate = (date) => {
     av.teaser_text
   FROM article_instances AS ai
 	JOIN article_view AS av ON av.instance_id = ai.id
-  WHERE ai.ts BETWEEN $1 AND DATE $2 + INTERVAL '1 day'  
+  WHERE ai.ts BETWEEN $1 AND $2  
   ORDER BY date_trunc DESC;`;
-  return pool.query(sqlText, [date, date])
+  return pool.query(sqlText, [startOfDay, endOfDay])
     .then(response => response.rows)
     .catch(err => err);
 }
 
-const countResults = (date1, date2) => {
+const countResults = (intervalStart, intervalEnd) => {
   // Count instances of article_ids within the given date range
   const sqlText = `SELECT COUNT(av.article_id) 
     FROM article_view AS av 
     JOIN article_instances AS ai ON ai.id = av.instance_id
     WHERE ai.ts BETWEEN $1 AND $2;`;
-  return pool.query(sqlText, [date1, date2])
+  return pool.query(sqlText, [intervalStart, intervalEnd])
     .then(response => response.rows[0].count)
     .catch(err => err);
 }
 
-const getInstancesOfChange = (date1, date2, offset = 0) => {
+const getInstancesOfChange = (intervalStart, intervalEnd, offset = 0) => {
   // Select the instances of title_text, slug_text, or teaser_text 
   // change for all articles that appeared within the given date range  
   const sqlText = `SELECT
@@ -52,21 +52,18 @@ const getInstancesOfChange = (date1, date2, offset = 0) => {
   WHERE ai.ts BETWEEN $1 AND $2
   ORDER BY date_trunc DESC
   LIMIT 40 OFFSET $3;`;
-  return pool.query(sqlText, [date1, date2, offset])
+  return pool.query(sqlText, [intervalStart, intervalEnd, offset])
     .then(response => response.rows)
     .catch(err => err);
 }
 
-const getArticlesByDateRange = async (date1, date2, offset = 0) => {
-  console.log('date1 61', date1);
-  console.log('date2 62', date2);
-  const readjustedDate2 =  JacobDate.adjustedToPrevDay(date2) // adjustedToPrevDay(date2)
-  console.log('readjustedDate2', readjustedDate2);
-  const count = await countResults(date1, date2);
+const getArticlesByDateRange = async (intervalStart, intervalEnd, offset = 0) => {
+  const readjustedIntervalEnd= JacobDate.adjustedToPrevDay(intervalEnd);
+  const count = await countResults(intervalStart, intervalEnd);
   return {
     count,
-    nextUrl: count - Number(offset) >= 40 ? `/api/list/range/${date1.slice(0, 10)}/${readjustedDate2.slice(0, 10)}?offset=${Number(offset) + 40}` : '',
-    results: await getInstancesOfChange(date1, date2, offset),
+    nextUrl: count - Number(offset) >= 40 ? `/api/list/range/${intervalStart.slice(0, 10)}/${readjustedIntervalEnd.slice(0, 10)}?offset=${Number(offset) + 40}` : '',
+    results: await getInstancesOfChange(intervalStart, intervalEnd, offset),
   }
 }
 

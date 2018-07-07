@@ -29,10 +29,11 @@ router.get('/article', async (req, res) => {
 });
 
 router.get('/list/:date', async (req, res) => {
-  let adjustedDate = timezoneOffsetHepler(req.params.date)
+  let startOfDay = JacobDate.startOfDay(req.params.date);
+  let endOfDay = JacobDate.endOfDay(req.params.date);
   try {
-    const result = await queries.getArticlesBySpecificDate(adjustedDate);
-    let response = result[0] ? result : messages.notFound(adjustedDate);    
+    const result = await queries.getArticlesBySpecificDate(startOfDay, endOfDay);
+    let response = result[0] ? result : messages.notFound(startOfDay, endOfDay);    
     res.send(response);
   } catch(err) {
     console.log(err);
@@ -42,11 +43,11 @@ router.get('/list/:date', async (req, res) => {
 
 router.get('/list/range/:date1/:date2', async (req, res) => {
   const {offset} = req.query;
-  let date1 = JacobDate.tzAdjustedISODateStr(req.params.date1);
-  let date2 = JacobDate.toNextDay(req.params.date2);
+  let startOfStartDay = JacobDate.startOfDay(req.params.date1);
+  let endOfEndDay = JacobDate.endOfDay(req.params.date2);
   try {
-    const result = await queries.getArticlesByDateRange(date1, date2, offset);
-    let response = result.results[0] ? result : messages.notFound(date1, date2, offset);
+    const result = await queries.getArticlesByDateRange(startOfStartDay, endOfEndDay, offset);
+    let response = result.results[0] ? result : messages.notFound(startOfStartDay, endOfEndDay, offset);
     res.send(response);
   } catch (err) {
     console.log(err);

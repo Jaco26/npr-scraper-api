@@ -14,12 +14,12 @@ module.exports = class JacobDate {
       minute = d.getMinutes();
     return Date.UTC(year, month, day, hour, minute);
   }
-  static tzAdjustedISODateStr(dateStr) {
+  static startOfDay(dateStr) {
     const utcDate = this.toUtc(dateStr);
     const timezoneOffset = this.timezoneOffsetMilli(dateStr);
     return new Date(utcDate + timezoneOffset).toISOString().slice(0, 19);
   }
-  static toNextDay(dateStr) {
+  static endOfDay(dateStr) {
     const utcDate = this.toUtc(dateStr);
     const timezoneOffset = this.timezoneOffsetMilli(dateStr);
     const nextDay = utcDate + timezoneOffset + this.oneDayInMillis();
