@@ -1,18 +1,7 @@
 const router = require('express').Router();
 const queries = require('../modules/api-queries');
 const messages = require('../modules/messages');
-
-function timezoneOffsetHepler(dateStr) {
-  let d = new Date(dateStr);
-  let timezoneOffsetMilli = (d.getTimezoneOffset() * 60000) * 2;
-  let year = d.getFullYear(),
-    month = d.getMonth(),
-    day = d.getDate(),
-    hour = d.getHours(),
-    minute = d.getMinutes();
-  let utcDate = Date.UTC(year, month, day, hour, minute);
-  return new Date(utcDate + timezoneOffsetMilli).toISOString().slice(0, 19);
-}
+const JacobDate = require('../modules/JacobDate');
 
 router.get('/list/search', async (req, res) => {
   let { phrase, teaser } = req.query;
@@ -53,8 +42,8 @@ router.get('/list/:date', async (req, res) => {
 
 router.get('/list/range/:date1/:date2', async (req, res) => {
   const {offset} = req.query;
-  let date1 = timezoneOffsetHepler(req.params.date1);
-  let date2 = timezoneOffsetHepler(req.params.date2);
+  let date1 = JacobDate.tzAdjustedISODateStr(req.params.date1);
+  let date2 = JacobDate.toNextDay(req.params.date2);
   try {
     const result = await queries.getArticlesByDateRange(date1, date2, offset);
     let response = result.results[0] ? result : messages.notFound(date1, date2, offset);

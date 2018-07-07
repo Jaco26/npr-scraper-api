@@ -1,4 +1,6 @@
 const pool = require('../pool');
+const JacobDate = require('../JacobDate');
+
 
 const getArticlesBySpecificDate = (date) => {  
   date = new Date()
@@ -50,19 +52,20 @@ const getInstancesOfChange = (date1, date2, offset = 0) => {
   WHERE ai.ts BETWEEN $1 AND $2
   ORDER BY date_trunc DESC
   LIMIT 40 OFFSET $3;`;
-   console.log(sqlText);
-   console.log(date1, date2);
-   
   return pool.query(sqlText, [date1, date2, offset])
     .then(response => response.rows)
     .catch(err => err);
 }
 
 const getArticlesByDateRange = async (date1, date2, offset = 0) => {
+  console.log('date1 61', date1);
+  console.log('date2 62', date2);
+  const readjustedDate2 =  JacobDate.adjustedToPrevDay(date2) // adjustedToPrevDay(date2)
+  console.log('readjustedDate2', readjustedDate2);
   const count = await countResults(date1, date2);
   return {
     count,
-    nextUrl: count - Number(offset) >= 40 ? `/api/list/range/${date1.slice(0, 10)}/${date2.slice(0, 10)}?offset=${Number(offset) + 40}` : '',
+    nextUrl: count - Number(offset) >= 40 ? `/api/list/range/${date1.slice(0, 10)}/${readjustedDate2.slice(0, 10)}?offset=${Number(offset) + 40}` : '',
     results: await getInstancesOfChange(date1, date2, offset),
   }
 }
