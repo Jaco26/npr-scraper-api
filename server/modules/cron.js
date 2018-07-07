@@ -1,5 +1,5 @@
 const {CronJob} = require('cron');
-const nprScraper = require('./npr-scraper');
+const nprScraper = require('../scraper/npr-scraper');
 const resultReducer = require('./result-reducer');
 const insertArticles = require('./insert-results');
 

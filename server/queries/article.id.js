@@ -1,4 +1,4 @@
-const pool = require('../pool');
+const pool = require('../modules/pool');
 
 const getAllInstancesByArticleId = (articleId) => {
   const sqlText = `SELECT 

@@ -1,5 +1,5 @@
-const pool = require('../pool');
-const JacobDate = require('../JacobDate');
+const pool = require('../modules/pool');
+const JacobDate = require('../modules/JacobDate');
 
 
 const getArticlesBySpecificDate = (startOfDay, endOfDay) => {  

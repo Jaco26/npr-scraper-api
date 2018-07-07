@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const queries = require('../modules/api-queries');
+const queries = require('../queries');
 const messages = require('../modules/messages');
 const JacobDate = require('../modules/JacobDate');
 

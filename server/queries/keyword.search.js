@@ -1,4 +1,4 @@
-const pool = require('../pool');
+const pool = require('../modules/pool');
 
 const generateSinglePhraseQuery = (searchPhrase, includeTeaserText) => {
   let phrase = searchPhrase.replace(/[""]/g, '');
