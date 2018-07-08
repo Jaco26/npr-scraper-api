@@ -41,10 +41,7 @@ CREATE TABLE article_instances
   element_type INT references article_types,
   section_type INT references section_types,
   story_number INT,
-  ts TIMESTAMP
-  without time zone default
-  (now
-  () at time zone 'utc')	
+  ts TIMESTAMP without time zone default (now () at time zone 'utc')	
 );
 
 

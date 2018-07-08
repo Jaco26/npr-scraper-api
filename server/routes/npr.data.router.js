@@ -29,8 +29,10 @@ router.get('/article', async (req, res) => {
 });
 
 router.get('/list/:date', async (req, res) => {
-  let startOfDay = JacobDate.startOfDay(req.params.date);
-  let endOfDay = JacobDate.endOfDay(req.params.date);
+  let startOfDay = JacobDate.offsetStartOfDay(req.params.date);
+  let endOfDay = JacobDate.offsetEndOfDay(req.params.date);
+  console.log('start of day', startOfDay);
+  
   try {
     const result = await queries.getArticlesBySpecificDate(startOfDay, endOfDay);
     let response = result[0] ? result : messages.notFound(startOfDay, endOfDay);    
@@ -43,8 +45,8 @@ router.get('/list/:date', async (req, res) => {
 
 router.get('/list/range/:date1/:date2', async (req, res) => {
   const {offset} = req.query;
-  let startOfStartDay = JacobDate.startOfDay(req.params.date1);
-  let endOfEndDay = JacobDate.endOfDay(req.params.date2);
+  let startOfStartDay = JacobDate.offsetStartOfDay(req.params.date1);
+  let endOfEndDay = JacobDate.offsetEndOfDay(req.params.date2);
   try {
     const result = await queries.getArticlesByDateRange(startOfStartDay, endOfEndDay, offset);
     let response = result.results[0] ? result : messages.notFound(startOfStartDay, endOfEndDay, offset);

@@ -1,7 +1,6 @@
 const pool = require('../modules/pool');
 const JacobDate = require('../modules/JacobDate');
 
-
 const getArticlesBySpecificDate = (startOfDay, endOfDay) => {  
   const sqlText = `SELECT
     date_trunc('minute', ai.ts),
