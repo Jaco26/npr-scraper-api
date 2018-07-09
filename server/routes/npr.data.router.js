@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const queries = require('../queries');
 const messages = require('../modules/messages');
-const { DateTime } = require('luxon');
+const { utcStartOfDay, utcEndOfDay } = require('../modules/DateTimeHelper');
 
 router.get('/list/search', async (req, res) => {
   let { phrase, teaser } = req.query;
@@ -28,9 +28,10 @@ router.get('/article', async (req, res) => {
   }
 });
 
-router.get('/list/:date', async (req, res) => {
-  let start = DateTime.fromISO(new Date(req.params.date).toISOString(), {zone: 'utc'});
-  let end = start.endOf('day');
+router.get('/list', async (req, res) => {
+  let { date } = req.query;
+  let start = utcStartOfDay(date)
+  let end = utcEndOfDay(date);
   try {
     const result = await queries.getArticlesBySpecificDate(start, end);
     let response = result[0] ? result : messages.notFound(start, end);   
@@ -41,10 +42,11 @@ router.get('/list/:date', async (req, res) => {
   }
 });
 
-router.get('/list/range/:date1/:date2', async (req, res) => {
-  const {offset} = req.query;
-  let start = DateTime.fromISO(new Date(req.params.date1).toISOString(), {zone: 'utc'});
-  let end = DateTime.fromISO(new Date(req.params.date2).toISOString(), { zone: 'utc' }).endOf('day');
+// router.get('/list/range/:date1/:date2', async (req, res) => {
+router.get('/list/range', async (req, res) => {
+  let {start, end, offset} = req.query;
+  start = utcStartOfDay(start);
+  end = utcEndOfDay(end);
   try {
     const result = await queries.getArticlesByDateRange(start, end, offset);
     let response = result.results[0] ? result : messages.notFound(start, end, offset);

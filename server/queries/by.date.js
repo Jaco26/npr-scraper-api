@@ -57,9 +57,12 @@ const getInstancesOfChange = (intervalStart, intervalEnd, offset = 0) => {
 
 const getArticlesByDateRange = async (intervalStart, intervalEnd, offset = 0) => {
   const count = await countResults(intervalStart, intervalEnd);
+  const nextUrl = count - Number(offset) >= 40 
+    ? `/api/list/range?start=${new Date(intervalStart.ts).toISOString().slice(0, 10)}&end=${new Date(intervalEnd.ts).toISOString().slice(0, 10)}&offset=${Number(offset) + 40}` 
+    : '';
   return {
     count,
-    nextUrl: count - Number(offset) >= 40 ? `/api/list/range/${new Date(intervalStart.ts).toISOString().slice(0, 10)}/${new Date(intervalEnd.ts).toISOString().slice(0, 10)}?offset=${Number(offset) + 40}` : '',
+    nextUrl,
     results: await getInstancesOfChange(intervalStart, intervalEnd, offset),
   }
 }
