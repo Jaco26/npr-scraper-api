@@ -1,13 +1,15 @@
 const router = require('express').Router();
 const queries = require('../queries');
 const messages = require('../modules/messages');
-const { utcStartOfDay, utcEndOfDay } = require('../modules/DateTimeHelper');
+const { utcStartOfDay, utcEndOfDay, utcOneWeekAgo, utcEndOfToday } = require('../modules/DateTimeHelper');
 
 router.get('/list/search', async (req, res) => {
-  let { phrase, teaser } = req.query;
+  let { phrase, teaser, start, end } = req.query;
+  start = start ? utcStartOfDay(start) : utcOneWeekAgo();
+  end = end ? utcEndOfDay(end) : utcEndOfToday(); 
   try {
     let includeTeaser = teaser == 'true' ? true: false;
-    let result = await queries.keywordSearch(phrase, includeTeaser);
+    let result = await queries.keywordSearch(phrase, includeTeaser, start, end);
     let response = result[0] ? result : messages.notFound(phrase);
     res.send(response);
   } catch (err) {
@@ -42,7 +44,6 @@ router.get('/list', async (req, res) => {
   }
 });
 
-// router.get('/list/range/:date1/:date2', async (req, res) => {
 router.get('/list/range', async (req, res) => {
   let {start, end, offset} = req.query;
   start = utcStartOfDay(start);

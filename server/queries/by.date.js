@@ -2,6 +2,8 @@ const pool = require('../modules/pool');
 const { DateTime } = require('luxon');
 
 const getArticlesBySpecificDate = (startOfDay, endOfDay) => {  
+  console.log(startOfDay);
+  
   const sqlText = `SELECT
     date_trunc('minute', ai.ts),
     ai.id AS article_instance_id,
