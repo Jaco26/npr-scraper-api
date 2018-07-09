@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const queries = require('../queries');
 const messages = require('../modules/messages');
-const JacobDate = require('../modules/JacobDate');
+const { DateTime } = require('luxon');
 
 router.get('/list/search', async (req, res) => {
   let { phrase, teaser } = req.query;
@@ -29,13 +29,11 @@ router.get('/article', async (req, res) => {
 });
 
 router.get('/list/:date', async (req, res) => {
-  let startOfDay = JacobDate.offsetStartOfDay(req.params.date);
-  let endOfDay = JacobDate.offsetEndOfDay(req.params.date);
-  console.log('start of day', startOfDay);
-  
+  let start = DateTime.fromISO(new Date(req.params.date).toISOString(), {zone: 'utc'});
+  let end = start.endOf('day');
   try {
-    const result = await queries.getArticlesBySpecificDate(startOfDay, endOfDay);
-    let response = result[0] ? result : messages.notFound(startOfDay, endOfDay);    
+    const result = await queries.getArticlesBySpecificDate(start, end);
+    let response = result[0] ? result : messages.notFound(start, end);   
     res.send(response);
   } catch(err) {
     console.log(err);
@@ -45,11 +43,11 @@ router.get('/list/:date', async (req, res) => {
 
 router.get('/list/range/:date1/:date2', async (req, res) => {
   const {offset} = req.query;
-  let startOfStartDay = JacobDate.offsetStartOfDay(req.params.date1);
-  let endOfEndDay = JacobDate.offsetEndOfDay(req.params.date2);
+  let start = DateTime.fromISO(new Date(req.params.date1).toISOString(), {zone: 'utc'});
+  let end = DateTime.fromISO(new Date(req.params.date2).toISOString(), { zone: 'utc' }).endOf('day');
   try {
-    const result = await queries.getArticlesByDateRange(startOfStartDay, endOfEndDay, offset);
-    let response = result.results[0] ? result : messages.notFound(startOfStartDay, endOfEndDay, offset);
+    const result = await queries.getArticlesByDateRange(start, end, offset);
+    let response = result.results[0] ? result : messages.notFound(start, end, offset);
     res.send(response);
   } catch (err) {
     console.log(err);

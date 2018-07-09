@@ -1,5 +1,5 @@
 const pool = require('../modules/pool');
-const JacobDate = require('../modules/JacobDate');
+const { DateTime } = require('luxon');
 
 const getArticlesBySpecificDate = (startOfDay, endOfDay) => {  
   const sqlText = `SELECT
@@ -56,11 +56,10 @@ const getInstancesOfChange = (intervalStart, intervalEnd, offset = 0) => {
 }
 
 const getArticlesByDateRange = async (intervalStart, intervalEnd, offset = 0) => {
-  const readjustedIntervalEnd= JacobDate.adjustedToPrevDay(intervalEnd);
   const count = await countResults(intervalStart, intervalEnd);
   return {
     count,
-    nextUrl: count - Number(offset) >= 40 ? `/api/list/range/${intervalStart.slice(0, 10)}/${readjustedIntervalEnd.slice(0, 10)}?offset=${Number(offset) + 40}` : '',
+    nextUrl: count - Number(offset) >= 40 ? `/api/list/range/${new Date(intervalStart.ts).toISOString().slice(0, 10)}/${new Date(intervalEnd.ts).toISOString().slice(0, 10)}?offset=${Number(offset) + 40}` : '',
     results: await getInstancesOfChange(intervalStart, intervalEnd, offset),
   }
 }
@@ -69,4 +68,5 @@ module.exports = {
   getArticlesBySpecificDate,
   getArticlesByDateRange,
 };
+
 
