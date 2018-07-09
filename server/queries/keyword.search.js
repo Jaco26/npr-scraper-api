@@ -4,6 +4,7 @@ const generateSinglePhraseQuery = (searchPhrase, includeTeaserText, start, end) 
   let phrase = searchPhrase.replace(/[""]/g, '');
   let sqlText = `SELECT 
       ai.id AS instance_id,
+      date_trunc('minute' ai.ts),
       ai.article_id, 
       ai.element_type, 
       ai.section_type, 
@@ -44,7 +45,7 @@ const generateMultiPhraseQuery = (searchPhrase, includeTeaserText, start, end) =
     : '';
   let sqlText = `SELECT 
       ai.id AS instance_id,
-      ai.ts,
+      date_trunc('minute', ai.ts) AS ts,
       ai.article_id, 
       ai.element_type, 
       ai.section_type, 

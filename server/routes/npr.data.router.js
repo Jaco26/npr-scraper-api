@@ -1,11 +1,11 @@
 const router = require('express').Router();
 const queries = require('../queries');
 const messages = require('../modules/messages');
-const { utcStartOfDay, utcEndOfDay, utcOneWeekAgo, utcEndOfToday } = require('../modules/DateTimeHelper');
+const { utcStartOfDay, utcEndOfDay, utcStartOfDayOneWeekAgo, utcEndOfToday, utcStartOfToday } = require('../modules/DateTimeHelper');
 
 router.get('/list/search', async (req, res) => {
   let { phrase, teaser, start, end } = req.query;
-  start = start ? utcStartOfDay(start) : utcOneWeekAgo();
+  start = start ? utcStartOfDay(start) : utcStartOfDayOneWeekAgo();
   end = end ? utcEndOfDay(end) : utcEndOfToday(); 
   try {
     let includeTeaser = teaser == 'true' ? true: false;
@@ -32,8 +32,8 @@ router.get('/article', async (req, res) => {
 
 router.get('/list', async (req, res) => {
   let { date } = req.query;
-  let start = utcStartOfDay(date)
-  let end = utcEndOfDay(date);
+  let start = date ? utcStartOfDay(date) : utcStartOfToday();
+  let end = date ? utcEndOfDay(date) : utcEndOfToday();
   try {
     const result = await queries.getArticlesBySpecificDate(start, end);
     let response = result[0] ? result : messages.notFound(start, end);   
