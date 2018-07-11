@@ -1,7 +1,7 @@
 const { DateTime } = require('luxon');
 
 const utcStartOfToday = () => {
-  return DateTime.fromISO(new Date().toISOString(), {zone: 'utc'}).startOf('day');
+  return DateTime.fromISO(new Date().toISOString(), {zone: 'utc'}).startOf('day').plus({hours: 3});
 }
 
 const utcEndOfToday = () => {
@@ -9,15 +9,15 @@ const utcEndOfToday = () => {
 } 
 
 const utcStartOfDayOneWeekAgo = () => {
-  return DateTime.fromISO(new Date().toISOString(), {zone: 'utc'}).minus({weeks: 1}).startOf('day');
+  return DateTime.fromISO(new Date().toISOString(), {zone: 'utc'}).minus({weeks: 1}).startOf('day').plus({hours: 3});
 }
 
 const utcStartOfDay = (dateStr) => {
-  return DateTime.fromISO(new Date(dateStr).toISOString(), {zone: 'utc'});
+  return DateTime.fromISO(new Date(dateStr).toISOString(), { zone: 'utc' }).startOf('day').plus({hours: 3});
 }
 
 const utcEndOfDay = (dateStr) => {
-  return DateTime.fromISO(new Date(dateStr).toISOString(), {zone: 'utc'}).endOf('day');
+  return DateTime.fromISO(new Date(dateStr).toISOString(), { zone: 'utc'}).endOf('day');
 }
 
 module.exports = { 
