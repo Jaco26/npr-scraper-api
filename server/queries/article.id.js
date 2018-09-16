@@ -13,7 +13,9 @@ const getAllInstancesByArticleId = (articleId) => {
   ORDER BY date_trunc DESC;`;
   return pool.query(sqlText, [articleId])
     .then(response => response.rows)
-    .catch(err => err);
+    .catch(err => {
+      throw new Error(err)
+    });
 }
 
 const getArticleById = (articleId) => {
@@ -32,7 +34,9 @@ const getArticleById = (articleId) => {
         allInstances: await getAllInstancesByArticleId(articleId),
       }
     })
-    .catch(err => err);
+    .catch(err => {
+      throw new Error(err)
+    });
 }
 
 

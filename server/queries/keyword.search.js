@@ -4,7 +4,7 @@ const generateSinglePhraseQuery = (searchPhrase, includeTeaserText, start, end) 
   let phrase = searchPhrase.replace(/[""]/g, '');
   let sqlText = `SELECT 
       ai.id AS instance_id,
-      date_trunc('minute' ai.ts),
+      date_trunc('minute', ai.ts) AS ts,
       ai.article_id, 
       ai.element_type, 
       ai.section_type, 
@@ -13,8 +13,8 @@ const generateSinglePhraseQuery = (searchPhrase, includeTeaserText, start, end) 
       av.title_url,
       av.slug_text, 
       av.teaser_text
-    FROM article_instances as ai 
-    JOIN article_view as av ON ai.id = av.instance_id
+    FROM article_instances AS ai 
+    JOIN article_view AS av ON ai.id = av.instance_id
     WHERE ai.article_id = ANY (
       SELECT article_id FROM article_view WHERE title_text ILIKE $1 
       ${includeTeaserText 
@@ -54,15 +54,18 @@ const generateMultiPhraseQuery = (searchPhrase, includeTeaserText, start, end) =
       av.title_url,
       av.slug_text, 
       av.teaser_text
-    FROM article_instances as ai 
-    JOIN article_view as av ON ai.id = av.instance_id
+    FROM article_instances AS ai 
+    JOIN article_view AS av ON ai.id = av.instance_id
     WHERE ai.article_id = ANY (
       SELECT article_id FROM article_view WHERE title_text ${ILIKE}
       ${includeTeaserText ? OR_ILIKE : ``}
     ) AND ai.ts BETWEEN ${includeTeaserText
       ? `$${searchPhraseLength * 2 + 1} AND $${searchPhraseLength * 2 + 2}`
       : `$${searchPhraseLength + 1} AND $${searchPhraseLength + 2}`};`;
-  let values = [...searchPhrase.split(' ').map(word => '%' + word + '%'), start, end];  
+  const splitSearchPhrase = searchPhrase.split(' ').map(word => '%' + word + '%');
+  let values = includeTeaserText 
+    ? [...splitSearchPhrase, ...splitSearchPhrase, start, end]
+    : [...splitSearchPhrase, start, end];
   return { sqlText, values };
 }
 
@@ -71,12 +74,17 @@ const searchText = (searchString, includeTeaserText, start, end) => {
     let { sqlText, values } = generateMultiPhraseQuery(searchString, includeTeaserText, start, end);
     return pool.query(sqlText, [...values])
       .then(response => response.rows)
-      .catch(err => err);
+      .catch(err => {
+        throw new Error(err)
+      });
   } else {
-    let { sqlText, values } = generateSinglePhraseQuery(searchString, includeTeaserText, start, end);
+    let { sqlText, values } = generateSinglePhraseQuery(searchString, includeTeaserText, start, end);   
+    console.log('SQL TEXT', sqlText, 'VALUES', values); 
     return pool.query(sqlText, [...values])
       .then(response => response.rows)
-      .catch(err => err);
+      .catch(err => {
+        throw new Error(err)
+      });
   }
 }
 
