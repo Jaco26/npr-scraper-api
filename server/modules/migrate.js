@@ -6,7 +6,7 @@
   but it won't be dumb.
 */
 
-const pool = require('../modules/pool');
+const oldPool = require('./old-db-pool');
 
 const articleTypes = {
   1: 'basic',
@@ -22,21 +22,21 @@ const prevDetailsCache = {
 
 async function getArticleInstnaces(articleId) {
   const sqlText = `SELECT * FROM article_instances WHERE article_id = $1 ORDER BY id;`;
-  return pool.query(sqlText, [articleId])
+  return oldPool.query(sqlText, [articleId])
     .then(res => res.rows)
     .catch(err => console.log(err));
 }
 
 async function getTextDetails(instanceId, detailTable) {
   const sqlText = `SELECT * FROM ${detailTable} WHERE instance_id = $1;`;
-  return pool.query(sqlText, [instanceId])
+  return oldPool.query(sqlText, [instanceId])
     .then(res => res.rows)
     .catch(err => console.log(err));
 }
 
-async function getArticles(limit) {
-  const sqlText = `SELECT * FROM article_urls ORDER BY id LIMIT $1;`;
-  return pool.query(sqlText, [limit])
+async function getArticles() {
+  const sqlText = `SELECT * FROM article_urls ORDER BY id;`;
+  return oldPool.query(sqlText, [])
     .then(res => res.rows)
     .catch(err => console.log(err));
 }
@@ -62,7 +62,7 @@ function mergeDetailsCorrectly(instanceTextData, table, instanceNumberData) {
 async function main() {
   const final = [];
   
-  const articles = await getArticles(10);
+  const articles = await getArticles();
 
   let i;
   for (i = 0; i < articles.length; i++) {
@@ -83,7 +83,7 @@ async function main() {
       final.push(mergedNumbersAndText);
     }
   }
-  return final;
+  return final.sort((a, b) => a.id - b.id);
 }
 
 module.exports = { main };

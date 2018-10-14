@@ -20,21 +20,21 @@ if (process.env.DATABASE_URL) {
   config = {
     host: 'localhost',
     port: 5432,
-    database: 'npr_scraper_api',
+    database: 'npr_scraper_copy',
     max: 10,
     idleTimeoutMillis: 30000,
   };
 }
 
-const pool = new pg.Pool(config);
+const oldPool = new pg.Pool(config);
 
-pool.on('connect', () => {
-  console.log('***** Postgres database connected! *****');  
+oldPool.on('connect', () => {
+  console.log('***** npr_scraper_copy database connected! *****');  
 });
 
-pool.on('error', (err) => {
+oldPool.on('error', (err) => {
   console.log('***** Unexpected error on idle client: *****', err);
   process.exit(-1);
 })
 
-module.exports = pool;
+module.exports = oldPool;

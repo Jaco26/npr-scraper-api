@@ -1,11 +1,11 @@
-const pool = require('../modules/pool');
+const newPool = require('./new-db-pool');
 
 function insertInstances(article) {
   const { elementType, sectionType, storyNumber, slugText, slugUrl, titleText, titleUrl, teaserText, classes } = article;
   const sqlText = `INSERT INTO instances 
     (slug_text, slug_url, title_url, title_text, teaser_text, classes, article_id, element_type, section_type, story_number)
     VALUES ($1, $2, $3, $4, $5, $6, (SELECT id FROM article_urls WHERE title_url = $7), $8, $9, $10);`;
-  pool.query(sqlText, [slugText, slugUrl, titleUrl, titleText, teaserText, classes, titleUrl, elementType, sectionType, storyNumber])
+    newPool.query(sqlText, [slugText, slugUrl, titleUrl, titleText, teaserText, classes, titleUrl, elementType, sectionType, storyNumber])
     .then(() => {
       console.log('SUCCESS ON INSERT INTO instances:', titleUrl);
     })
@@ -17,11 +17,11 @@ function insertInstances(article) {
 function insertArticles(resultList) {
   resultList.forEach(article => {
     const sqlText1 = `SELECT id FROM article_urls WHERE title_url = $1;`;
-    pool.query(sqlText1, [article.titleUrl])
+    newPool.query(sqlText1, [article.titleUrl])
       .then(result => {
         if (!result.rows[0]) {
           const sqlText2 = `INSERT INTO article_urls (title_url) VALUES($1);`;
-          pool.query(sqlText2, [article.titleUrl])
+          newPool.query(sqlText2, [article.titleUrl])
             .then(() => {
               insertInstances(article);
             })
@@ -29,6 +29,7 @@ function insertArticles(resultList) {
               console.log(err);
             });
         } else {
+          console.log('ARTICLE ALREADY EXISTS', article.titleUrl);
           insertInstances(article);
         }
       })
