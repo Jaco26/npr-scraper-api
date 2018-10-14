@@ -1,7 +1,17 @@
 const pool = require('../modules/pool');
 
 function insertInstances(article) {
-  
+  const { elementType, sectionType, storyNumber, slugText, slugUrl, titleText, titleUrl, teaserText, classes } = article;
+  const sqlText = `INSERT INTO instances 
+    (slug_text, slug_url, title_url, title_text, teaser_text, classes, article_id, element_type, section_type, story_number)
+    VALUES ($1, $2, $3, $4, $5, $6, (SELECT id FROM article_urls WHERE title_url = $7), $8, $9, $10);`;
+  pool.query(sqlText, [slugText, slugUrl, titleUrl, titleText, teaserText, classes, titleUrl, elementType, sectionType, storyNumber])
+    .then(() => {
+      console.log('SUCCESS ON INSERT INTO instances:', titleUrl);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 }
 
 function insertArticles(resultList) {
